@@ -7,5 +7,8 @@
     >
       Hello World
     </h1>
+    <h2>
+        check vercel deploy
+    </h2>
   </main>
 </template>
