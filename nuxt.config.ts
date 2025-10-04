@@ -7,4 +7,17 @@ export default defineNuxtConfig({
   nitro: {
     preset: "vercel",
   },
+  runtimeConfig: {
+    public: {
+      ENV: process.env[process.env.NODE_ENV + "_" + "ENV"],
+      apiKey: process.env[process.env.NODE_ENV + "_" + "apiKey"],
+      authDomain: process.env[process.env.NODE_ENV + "_" + "authDomain"],
+      projectId: process.env[process.env.NODE_ENV + "_" + "projectId"],
+      storageBucket: process.env[process.env.NODE_ENV + "_" + "storageBucket"],
+      databaseURL: process.env[process.env.NODE_ENV + "_" + "databaseURL"],
+      messagingSenderId: process.env[process.env.NODE_ENV + '_' + 'messagingSenderId'],
+      appId: process.env[process.env.NODE_ENV + '_' + 'appId'],
+      measurementId: process.env[process.env.NODE_ENV + '_' + 'measurementId'],
+    },
+  },
 });
