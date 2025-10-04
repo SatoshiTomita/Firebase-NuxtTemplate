@@ -15,9 +15,10 @@ export default defineNuxtConfig({
       projectId: process.env[process.env.NODE_ENV + "_" + "projectId"],
       storageBucket: process.env[process.env.NODE_ENV + "_" + "storageBucket"],
       databaseURL: process.env[process.env.NODE_ENV + "_" + "databaseURL"],
-      messagingSenderId: process.env[process.env.NODE_ENV + '_' + 'messagingSenderId'],
-      appId: process.env[process.env.NODE_ENV + '_' + 'appId'],
-      measurementId: process.env[process.env.NODE_ENV + '_' + 'measurementId'],
+      messagingSenderId:
+        process.env[process.env.NODE_ENV + "_" + "messagingSenderId"],
+      appId: process.env[process.env.NODE_ENV + "_" + "appId"],
+      measurementId: process.env[process.env.NODE_ENV + "_" + "measurementId"],
     },
   },
 });
