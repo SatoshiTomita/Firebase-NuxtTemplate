@@ -30,9 +30,9 @@ export default defineNuxtRouteMiddleware(() => {
     databaseURL: config.public.databaseURL,
     projectId: config.public.projectId,
     storageBucket: config.public.storageBucket,
-    // messagingSenderId: config.public.messagingSenderId,
-    // appId: config.public.appId,
-    // measurementId: config.public.measurementId,
+    messagingSenderId: config.public.messagingSenderId,
+    appId: config.public.appId,
+    measurementId: config.public.measurementId,
   });
   const functions = getFunctions(getApp());
   functions.region = "asia-northeast1";

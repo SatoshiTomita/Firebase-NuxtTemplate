@@ -2,19 +2,13 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import {
-  getAuth,
-  onAuthStateChanged,
   signInWithPopup,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   updateProfile,
-  GoogleAuthProvider,
   type User
 } from 'firebase/auth'
-import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore'
-
-const auth = getAuth()
-const db = getFirestore()
+const { $auth, $ensureUserDoc, $GoogleAuthProvider } = useNuxtApp()
 const router = useRouter()
 
 // タブ状態
@@ -41,24 +35,8 @@ const error = ref('')
 //   })
 // })
 
-// 共通: users/{uid} の初期化
 const ensureUserDoc = async (uid: string, user?: User) => {
-  const userRef = doc(db, 'users', uid)
-  const snap = await getDoc(userRef)
-  if (!snap.exists()) {
-    await setDoc(userRef, {
-      createdAt: serverTimestamp(),
-      email: user?.email ?? null,
-      displayName: user?.displayName ?? null,
-      liffId:"2007981616-ylQBwQj9"
-    })
-  } else {
-    await setDoc(userRef, {
-      email: user?.email ?? null,
-      displayName: user?.displayName ?? null,
-      updatedAt: serverTimestamp(),
-    }, { merge: true })
-  }
+  await $ensureUserDoc(uid, { email: user?.email ?? null, displayName: user?.displayName ?? null })
 }
 
 // ログイン：Google
@@ -66,11 +44,11 @@ const loginWithGoogle = async () => {
   error.value = ''
   loading.value = true
   try {
-    const provider = new GoogleAuthProvider()
-    const result = await signInWithPopup(auth, provider)
+    const provider = new $GoogleAuthProvider()
+    const result = await signInWithPopup($auth, provider)
     await ensureUserDoc(result.user.uid, result.user)
       //遷移させたいリンクを設定する
-    // router.push(`/${result.user.uid}`)
+    router.push(`/`)
   } catch (err: any) {
     error.value = err?.message || 'Googleログインに失敗しました'
   } finally {
@@ -83,10 +61,10 @@ const loginWithEmail = async () => {
   error.value = ''
   loading.value = true
   try {
-    const result = await signInWithEmailAndPassword(auth, email.value, password.value)
+    const result = await signInWithEmailAndPassword($auth, email.value, password.value)
     await ensureUserDoc(result.user.uid, result.user)
       //遷移させたいリンクを設定する
-    // router.push(`/${result.user.uid}`)
+    router.push(`/`)
   } catch (err: any) {
     error.value = err?.message || 'メールログインに失敗しました'
   } finally {
@@ -104,11 +82,11 @@ const signUpWithEmail = async () => {
 
   loading.value = true
   try {
-    const cred = await createUserWithEmailAndPassword(auth, emailSign.value, passwordSign.value)
+    const cred = await createUserWithEmailAndPassword($auth, emailSign.value, passwordSign.value)
     await updateProfile(cred.user, { displayName: displayName.value })
     await ensureUserDoc(cred.user.uid, cred.user)
     //遷移させたいリンクを設定する
-    // router.push(`/${cred.user.uid}`)
+    router.push(`/`)
   } catch (e: any) {
     error.value = mapAuthError(e?.code) ?? (e?.message || 'アカウント作成に失敗しました')
   } finally {
