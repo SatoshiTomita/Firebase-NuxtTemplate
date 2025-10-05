@@ -7,5 +7,8 @@
     >
       Hello World
     </h1>
+    <h2>
+      Deploy completed
+    </h2>
   </main>
 </template>
