@@ -46,6 +46,7 @@ module.exports = {
           "animation-delay-300",
           "animation-delay-400",
           "text-stroke",
+          "animate-fade-in",
         ],
       },
     ],

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import {
   signInWithPopup,
@@ -50,7 +50,7 @@ const loginWithGoogle = async () => {
     const provider = new $GoogleAuthProvider();
     const result = await signInWithPopup($auth, provider);
     await ensureUserDoc(result.user.uid, result.user);
-    //遷移させたいリンクを設定する
+    // 遷移させたいリンクを設定する
     router.push(`/`);
   } catch (err: any) {
     error.value = err?.message || "Googleログインに失敗しました";
@@ -70,7 +70,7 @@ const loginWithEmail = async () => {
       password.value,
     );
     await ensureUserDoc(result.user.uid, result.user);
-    //遷移させたいリンクを設定する
+    // 遷移させたいリンクを設定する
     router.push(`/`);
   } catch (err: any) {
     error.value = err?.message || "メールログインに失敗しました";
@@ -108,7 +108,7 @@ const signUpWithEmail = async () => {
     );
     await updateProfile(cred.user, { displayName: displayName.value });
     await ensureUserDoc(cred.user.uid, cred.user);
-    //遷移させたいリンクを設定する
+    // 遷移させたいリンクを設定する
     router.push(`/`);
   } catch (e: any) {
     error.value =
@@ -136,10 +136,10 @@ function mapAuthError(code?: string) {
 
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center"
+    class="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800"
   >
     <div
-      class="bg-white rounded-2xl shadow-xl p-10 text-center w-full max-w-sm animate-fade-in space-y-5"
+      class="animate-fade-in w-full max-w-sm space-y-5 rounded-2xl bg-white p-10 text-center shadow-xl"
     >
       <h1 class="text-2xl font-bold text-gray-800">ようこそ</h1>
       <p class="text-gray-600">
@@ -149,11 +149,11 @@ function mapAuthError(code?: string) {
       <!-- Google共通ボタン（ログイン/新規どちらでも可） -->
       <button
         :disabled="loading"
+        class="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white transition hover:bg-blue-700 disabled:opacity-60"
         @click="loginWithGoogle"
-        class="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-semibold py-2 px-4 rounded-xl w-full transition"
       >
         <!-- Google "G" アイコン -->
-        <svg class="w-5 h-5" viewBox="0 0 533.5 544.3" aria-hidden="true">
+        <svg class="size-5" viewBox="0 0 533.5 544.3" aria-hidden="true">
           <path
             fill="#4285F4"
             d="M533.5 278.4c0-17.4-1.5-34.1-4.4-50.2H272.1v95h147.1c-6.4 34.6-25.9 63.9-55.1 83.5v68h88.9c52-47.9 80.5-118.5 80.5-196.3z"
@@ -178,30 +178,30 @@ function mapAuthError(code?: string) {
         >
       </button>
 
-      <div class="border-t border-gray-300 my-2"></div>
+      <div class="my-2 border-t border-gray-300"></div>
 
       <!-- ログインフォーム -->
       <template v-if="mode === 'login'">
         <input
-          type="email"
           v-model="email"
+          type="email"
           placeholder="メールアドレス"
-          class="w-full border border-gray-300 p-2 rounded"
+          class="w-full rounded border border-gray-300 p-2"
         />
         <input
-          type="password"
           v-model="password"
+          type="password"
           placeholder="パスワード"
-          class="w-full border border-gray-300 p-2 rounded"
+          class="w-full rounded border border-gray-300 p-2"
         />
         <button
           :disabled="loading"
+          class="flex w-full items-center justify-center gap-2 rounded-xl bg-black px-4 py-2 font-semibold text-white transition hover:bg-gray-800 disabled:opacity-60"
           @click="loginWithEmail"
-          class="flex items-center justify-center gap-2 bg-black hover:bg-gray-800 disabled:opacity-60 text-white font-semibold py-2 px-4 rounded-xl w-full transition"
         >
           <!-- メールアイコン -->
           <svg
-            class="w-5 h-5"
+            class="size-5"
             viewBox="0 0 24 24"
             aria-hidden="true"
             fill="none"
@@ -217,7 +217,7 @@ function mapAuthError(code?: string) {
         </button>
 
         <!-- ここがリクエストのポイント：下のリンクでタブ切替 -->
-        <p class="text-sm text-gray-600 mt-2">
+        <p class="mt-2 text-sm text-gray-600">
           はじめての方は
           <button
             class="text-blue-600 hover:underline"
@@ -231,38 +231,38 @@ function mapAuthError(code?: string) {
       <!-- 新規作成フォーム -->
       <template v-else>
         <input
-          type="text"
           v-model="displayName"
+          type="text"
           placeholder="表示名"
-          class="w-full border border-gray-300 p-2 rounded"
+          class="w-full rounded border border-gray-300 p-2"
         />
         <input
-          type="email"
           v-model="emailSign"
+          type="email"
           placeholder="メールアドレス"
-          class="w-full border border-gray-300 p-2 rounded"
+          class="w-full rounded border border-gray-300 p-2"
         />
         <input
-          type="password"
           v-model="passwordSign"
+          type="password"
           placeholder="パスワード（6文字以上）"
-          class="w-full border border-gray-300 p-2 rounded"
+          class="w-full rounded border border-gray-300 p-2"
         />
         <input
-          type="password"
           v-model="confirmPassword"
+          type="password"
           placeholder="パスワード（確認）"
-          class="w-full border border-gray-300 p-2 rounded"
+          class="w-full rounded border border-gray-300 p-2"
         />
         <button
           :disabled="loading"
+          class="w-full rounded-xl bg-black px-4 py-2 font-semibold text-white transition hover:bg-gray-800 disabled:opacity-60"
           @click="signUpWithEmail"
-          class="bg-black hover:bg-gray-800 disabled:opacity-60 text-white font-semibold py-2 px-4 rounded-xl w-full transition"
         >
           アカウントを作成
         </button>
 
-        <p class="text-sm text-gray-600 mt-2">
+        <p class="mt-2 text-sm text-gray-600">
           すでにアカウントをお持ちですか？
           <button class="text-blue-600 hover:underline" @click="mode = 'login'">
             ログインへ
@@ -270,7 +270,7 @@ function mapAuthError(code?: string) {
         </p>
       </template>
 
-      <p v-if="error" class="text-red-600 text-sm mt-2">{{ error }}</p>
+      <p v-if="error" class="mt-2 text-sm text-red-600">{{ error }}</p>
     </div>
   </div>
 </template>
